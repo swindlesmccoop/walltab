@@ -3,3 +3,5 @@ data/*
 !data/.gitkeep
 .env
 *.md.bak
+deno.lock
+.claude/

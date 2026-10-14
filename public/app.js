@@ -448,6 +448,13 @@
   }
 
   // 'past' once an event has ended, 'now' while it's running; all-day events have no state.
+  // Minutes into the day being shown. Between midnight and the rollover hour the list is still
+  // the previous calendar day's, so the clock is past all of it (not early in it).
+  function dayMinutes(now) {
+    const mins = now.getHours() * 60 + now.getMinutes();
+    return currentDateKey < localDateKey(now) ? mins + 24 * 60 : mins;
+  }
+
   function eventState(task, nowMin) {
     if (task.allDay || !task.time || !task.endTime) return '';
     const e = task.endTime > task.time ? minutesOf(task.endTime) : 24 * 60;
@@ -512,7 +519,7 @@
   }
 
   function updateSummary(now = new Date()) {
-    const nowMin = now.getHours() * 60 + now.getMinutes();
+    const nowMin = dayMinutes(now);
     const checkable = tasks.filter((t) => t.kind !== 'event');
     // Timed events join the count as done once they've ended (all-day ones can't finish, so they never count).
     const events = countEvents ? tasks.filter((t) => t.kind === 'event' && t.time && t.endTime) : [];
@@ -530,7 +537,7 @@
   function renderTasks() {
     if (lastTasksJSON === '' && !tasks.length) return; // not loaded yet; avoid flashing the empty state
     const now = new Date();
-    const nowMin = now.getHours() * 60 + now.getMinutes();
+    const nowMin = dayMinutes(now);
 
     const { checkable, doneCount, total } = updateSummary(now);
 
