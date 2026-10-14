@@ -4,7 +4,8 @@ I wanted a daily to-do list to keep me accountable but this project eventually e
 
 ## Features (not all of them)
 - Dynamic color theme that adjusts to time of day with a smooth fade
-  - <img src="screenshots/1-sunrise.png" width="24%" alt="Sunrise"> <img src="screenshots/2-day.png" width="24%" alt="Day"> <img src="screenshots/3-evening.png" width="24%" alt="Evening"> <img src="screenshots/4-night.png" width="24%" alt="Night">
+
+  <img src="screenshots/1-sunrise.png" width="24%" alt="Sunrise"> <img src="screenshots/2-day.png" width="24%" alt="Day"> <img src="screenshots/3-evening.png" width="24%" alt="Evening"> <img src="screenshots/4-night.png" width="24%" alt="Night">
 - Progress wheel for tracking how much you've done today
   - Configurable to determine what actually counts as progress
 - Rolling time animations to prevent a minute passing from catching your eye and distracting you
