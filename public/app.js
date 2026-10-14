@@ -556,7 +556,7 @@
       frag.appendChild(task.kind === 'event' ? eventRow(task, nowMin) : checkRow(task, next, nowMin));
     }
 
-    if (total && doneCount === total) frag.appendChild(el('div', 'all-done', 'All done for today ✨'));
+    if (total && doneCount === total) frag.appendChild(el('div', 'all-done', 'All done for today'));
     els.scroll.appendChild(frag);
   }
 
