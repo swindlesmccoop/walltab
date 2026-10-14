@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="instant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#07090f">
+<title>walltab</title>
+<link rel="preload" href="fonts/outfit.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="dash">
+    <section class="stack">
+      <div class="card clock-card">
+        <div class="greeting" id="greeting">Hello</div>
+        <div class="clock">
+          <span id="time" class="time">--:--</span>
+          <span class="clock-side">
+            <span id="ampm" class="ampm">--</span>
+            <span id="seconds" class="seconds">--</span>
+          </span>
+        </div>
+        <div id="date" class="date">&nbsp;</div>
+      </div>
+
+      <div class="card weather-card" id="weather">
+        <div class="wx-now">
+          <div class="wx-icon" id="w-icon">·</div>
+          <div class="wx-temp"><span id="w-temp">--</span><span class="deg">°</span></div>
+          <div class="wx-desc">
+            <div class="wx-label" id="w-label">Loading weather…</div>
+            <div class="wx-feels" id="w-feels">&nbsp;</div>
+            <div class="wx-city" id="w-city">&nbsp;</div>
+          </div>
+        </div>
+        <div class="wx-stats">
+          <div class="stat"><span class="stat-k">High / Low</span><span class="stat-v" id="w-hilo">--</span></div>
+          <div class="stat"><span class="stat-k">Rain</span><span class="stat-v" id="w-rain">--</span></div>
+          <div class="stat"><span class="stat-k">Humidity</span><span class="stat-v" id="w-hum">--</span></div>
+          <div class="stat"><span class="stat-k">Wind</span><span class="stat-v" id="w-wind">--</span></div>
+          <div class="stat"><span class="stat-k" id="w-sun-k">Sunset</span><span class="stat-v" id="w-sun">--</span></div>
+        </div>
+        <div class="wx-forecast" id="w-forecast"></div>
+      </div>
+    </section>
+
+    <section class="card tasks-pane" id="tasks-pane">
+      <header class="tasks-head">
+        <div class="tasks-title">
+          <h1>Today</h1>
+          <div class="tasks-sub" id="tasks-sub">&nbsp;</div>
+        </div>
+        <div class="head-actions">
+        <button id="refresh-btn" class="icon-btn" aria-label="Refresh calendars">
+          <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"></path><polyline points="20 4 20 9 15 9"></polyline></svg>
+        </button>
+        <div class="ring" aria-hidden="true">
+          <svg viewBox="0 0 44 44">
+            <circle class="ring-track" cx="22" cy="22" r="19"></circle>
+            <circle class="ring-fill" id="ring-fill" cx="22" cy="22" r="19"></circle>
+          </svg>
+          <span class="ring-pct" id="ring-pct">0%</span>
+        </div>
+        </div>
+      </header>
+
+      <div class="task-scroll" id="task-scroll"></div>
+
+      <footer class="tasks-foot">
+        <button id="week-btn" class="pill-btn week-btn">This week</button>
+        <button id="edit-btn" class="pill-btn">Edit</button>
+        <button id="add-btn" class="pill-btn primary">＋ New task</button>
+      </footer>
+    </section>
+  </div>
+
+  <div id="add-modal" class="modal">
+    <div class="modal-card">
+      <h2>New task</h2>
+      <input id="add-text" type="text" placeholder="What needs doing?" maxlength="80" autocomplete="off">
+      <div class="field" id="when-field">
+        <span class="field-label">When</span>
+        <div class="presets" id="when-row">
+          <button data-when="anytime">Anytime</button>
+          <button data-when="morning">Morning</button>
+          <button data-when="afternoon">Afternoon</button>
+          <button data-when="evening">Evening</button>
+          <input id="add-time" type="time" aria-label="Specific time">
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Repeat</span>
+        <div class="presets" id="presets">
+          <button data-preset="all">Every day</button>
+          <button data-preset="weekdays">Weekdays</button>
+          <button data-preset="weekends">Weekends</button>
+          <button data-preset="every2">Every other day</button>
+          <button data-preset="once">One-time</button>
+        </div>
+      </div>
+      <div class="days-row" id="days-row">
+        <button data-day="mon">M</button>
+        <button data-day="tue">T</button>
+        <button data-day="wed">W</button>
+        <button data-day="thu">T</button>
+        <button data-day="fri">F</button>
+        <button data-day="sat">S</button>
+        <button data-day="sun">S</button>
+      </div>
+      <div class="modal-actions">
+        <button id="cancel-btn" class="pill-btn">Cancel</button>
+        <button id="save-btn" class="pill-btn primary">Add task</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="week-modal" class="modal">
+    <div class="week-card">
+      <header class="week-head">
+        <div class="week-nav">
+          <button id="week-prev" class="icon-btn" aria-label="Previous week">
+            <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"></polyline></svg>
+          </button>
+          <div class="week-titles">
+            <h2 id="week-title">This week</h2>
+            <div class="week-range" id="week-range"></div>
+          </div>
+          <button id="week-next" class="icon-btn" aria-label="Next week">
+            <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"></polyline></svg>
+          </button>
+        </div>
+        <button id="week-close" class="pill-btn">Close</button>
+      </header>
+      <div class="week-grid" id="week-grid"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

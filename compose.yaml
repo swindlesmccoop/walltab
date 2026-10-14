@@ -1,0 +1,20 @@
+services:
+  walltab:
+    image: ghcr.io/swindlesmccoop/walltab:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: walltab
+    restart: unless-stopped
+    user: "${PUID:-1000}:${PGID:-1000}"
+    env_file:
+      - .env
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+    networks:
+      - proxynet
+
+# Served through Caddy over proxynet, so no host port is published.
+networks:
+  proxynet:
+    external: true
