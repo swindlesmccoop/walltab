@@ -11,8 +11,10 @@ I wanted a daily to-do list to keep me accountable but this project eventually e
 - Rolling time animations to prevent a minute passing from catching your eye and distracting you
   - `CLOCK_FADE_SECONDS` needs to be a non-zero value
 - Events synced from CalDAV server (and a refresh button)
+
+  <img src="screenshots/5-week.png" width="48%" alt="Week view">
+  
   - Differentiates between calendars for classes, assignments, work, etc. for configuration purposes
-  - <img src="screenshots/5-week.png" width="48%" alt="Week view">
 - Recurring task items configured with markdown
   - Reminders for daily life things that don't belong on a calendar like shaving and showering
 - Persistent to-do list that carries between days
