@@ -832,6 +832,27 @@
   }
   document.addEventListener('click', enterFullscreen, true);
 
+  // ---------- Nightly reload ----------
+  // Days of nonstop running let the browser's memory creep up until Fire OS kills it, so start
+  // fresh once a night. Only reload when the server answers (an error page would never recover)
+  // and nobody has a dialog open; otherwise try again shortly.
+  const RELOAD_HOUR = 4;
+  function scheduleReload(ms) {
+    if (ms === undefined) {
+      const next = new Date();
+      next.setHours(RELOAD_HOUR, 0, 0, 0);
+      if (next <= new Date()) next.setDate(next.getDate() + 1);
+      ms = next - new Date();
+    }
+    setTimeout(async () => {
+      const busy = els.modal.classList.contains('open') || els.weekModal.classList.contains('open');
+      let up = false;
+      try { up = (await fetch('/api/config', { cache: 'no-store' })).ok; } catch (err) { /* server down */ }
+      if (busy || !up) return scheduleReload(5 * 60 * 1000);
+      location.reload();
+    }, ms);
+  }
+
   // ---------- Boot ----------
   async function boot() {
     try {
@@ -852,6 +873,7 @@
     setInterval(loadWeather, 10 * 60 * 1000);
     loadWeek(sundayOf(currentDateKey));
     setInterval(() => loadWeek(sundayOf(currentDateKey)), 5 * 60 * 1000);
+    scheduleReload();
   }
   boot();
 })();
